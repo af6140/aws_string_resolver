@@ -92,7 +92,7 @@ public class StringResolverSSMTest {
     @Test
     public void testResolveSSMString() {
         StringResolver resolver =new StringResolver();
-        resolver.getClientBuilder().setEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:5000", Region.getRegion(Regions.US_EAST_1).toString()));
+        resolver.getClientBuilder().setEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://127.0.0.1:5000", Region.getRegion(Regions.US_EAST_1).toString()));
 
         try {
             String resolved = resolver.resolveSsmString("Say {{resolve:ssm:/test/param}}");

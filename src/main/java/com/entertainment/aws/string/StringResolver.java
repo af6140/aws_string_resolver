@@ -61,7 +61,7 @@ public class StringResolver {
     private String region;
 
     public StringResolver(String region ){
-        this.clientBuilder=AWSSimpleSystemsManagementClient.builder();
+        this.clientBuilder=AWSSimpleSystemsManagementClientBuilder.standard();
         this.SSM_STRING_REGEX = Pattern.compile(SSM_STRING_PATTERN);
         this.SSM_SECURE_STRING_REGEX = Pattern.compile(SSM_SECURE_STRING_PATTERN);
         this.SECRET_MANAGER_STRING_REGEX = Pattern.compile(SECRET_MANAGER_STRING_PATTERN);
