@@ -11,6 +11,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <aws.component.version>1.11.461</aws.component.version>
+        <maven.wagon.http.ssl.allowall>true</maven.wagon.http.ssl.allowall>
+        <maven.wagon.http.ssl.ignore.validity.dates>true</maven.wagon.http.ssl.ignore.validity.dates>
         <skipTests>true</skipTests>
     </properties>
     <dependencies>
@@ -68,5 +70,11 @@
             </plugin>
         </plugins>
     </build>
-
+    <distributionManagement>
+        <repository>
+            <id>entertainment</id>
+            <name>AWS Entertainemnt Relase</name>
+            <url>https://nexus.prod.ent-vpc-2.entpub.net/repository/entertainment</url>
+        </repository>
+    </distributionManagement>
 </project>
