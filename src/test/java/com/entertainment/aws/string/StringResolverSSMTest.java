@@ -95,7 +95,7 @@ public class StringResolverSSMTest {
         resolver.getClientBuilder().setEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://127.0.0.1:5000", Region.getRegion(Regions.US_EAST_1).toString()));
 
         try {
-            String resolved = resolver.resolveSsmString("Say {{resolve:ssm:/test/param}}");
+            String resolved = resolver.resolveSsmString("Say {resolve:ssm:/test/param}");
             assert("Say congratulation".equals(resolved));
         }catch (ResolveException e) {
             System.out.println(e.getMessage());

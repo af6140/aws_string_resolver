@@ -5,15 +5,15 @@ import org.junit.*;
 
 public class StringResolverTest {
 
-    String SSMWithVersion = "abc{{ {{resolve:ssm:/abc/abc:123}}tbb";
-    String templateSSMWithVersion = "{{resolve:ssm:/abc/abc:123}}";
-    String SSMWithLabel = "abc{{ {{resolve:ssm:/abc/abc:test}}tbb";
-    String templateSSMWithLabel = "{{resolve:ssm:/abc/abc:test}}";
-    String SSMWithOutVersion = "abc{{ {{resolve:ssm:/abc/abc}}tbb";
-    String templateSSMWithOutVersion = "{{resolve:ssm:/abc/abc}}";
+    String SSMWithVersion = "abc{ {resolve:ssm:/abc/abc:123}tbb";
+    String templateSSMWithVersion = "{resolve:ssm:/abc/abc:123}";
+    String SSMWithLabel = "abc{ {resolve:ssm:/abc/abc:test}tbb";
+    String templateSSMWithLabel = "{resolve:ssm:/abc/abc:test}";
+    String SSMWithOutVersion = "abc{ {resolve:ssm:/abc/abc}tbb";
+    String templateSSMWithOutVersion = "{resolve:ssm:/abc/abc}";
 
-    String secureSSMWithOutVersion = "abc{{ {{resolve:ssm-secure:/abc/abc}}tbb";
-    String templateSecureSSMWithOutVersion = "{{resolve:ssm-secure:/abc/abc}}";
+    String secureSSMWithOutVersion = "abc{ {resolve:ssm-secure:/abc/abc}tbb";
+    String templateSecureSSMWithOutVersion = "{resolve:ssm-secure:/abc/abc}";
 
 
     @Test
