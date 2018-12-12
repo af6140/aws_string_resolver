@@ -45,10 +45,10 @@ public class StringResolver {
     public static String TYPE_SSM_SECURE_STRING ="ssm-secure";
     public static String TYPE_SECRET_MANAGER_STRING ="secretmanager";
 
-    public static String SSM_STRING_PATTERN="\\{resolve:ssm:[a-zA-Z0-9_.-/]+(:[a-zA-Z0-9_._]+)?\\}";
+    public static String SSM_STRING_PATTERN="\\{resolve:ssm:[a-zA-Z0-9_.\\-/]+(:[a-zA-Z0-9_._]+)?\\}";
     //public static String SSM_STRING_PATTERN="\\{\\{resolve:ssm:[a-zA-Z0-9_.-/]+:\\d+\\}\\}";
-    public static String SSM_SECURE_STRING_PATTERN="\\{resolve:ssm-secure:[a-zA-Z0-9_.-/]+(:[a-zA-Z0-9_._]+)?\\}";
-    public static String SECRET_MANAGER_STRING_PATTERN="\\{resolve:secretmanager:[a-zA-Z0-9_.-/]+:[a-zA-Z0-9_.-/]+:[a-zA-Z0-9_.-/]+:[a-zA-Z0-9_.-/]+:\\d+\\}";
+    public static String SSM_SECURE_STRING_PATTERN="\\{resolve:ssm-secure:[a-zA-Z0-9_.\\-/]+(:[a-zA-Z0-9_._]+)?\\}";
+    public static String SECRET_MANAGER_STRING_PATTERN="\\{resolve:secretmanager:[a-zA-Z0-9_.\\-/]+:[a-zA-Z0-9_.\\-/]+:[a-zA-Z0-9_.\\-/]+:[a-zA-Z0-9_.\\-/]+:\\d+\\}";
 
     private AWSSimpleSystemsManagementClientBuilder  clientBuilder =null;
 

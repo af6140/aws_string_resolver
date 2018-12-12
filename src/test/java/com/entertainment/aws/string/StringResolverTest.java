@@ -13,7 +13,7 @@ public class StringResolverTest {
     String templateSSMWithOutVersion = "{resolve:ssm:/abc/abc}";
 
     String secureSSMWithOutVersion = "abc{ {resolve:ssm-secure:/abc/abc}tbb";
-    String templateSecureSSMWithOutVersion = "{resolve:ssm-secure:/abc/abc}";
+    String templateSecureSSMWithOutVersion = "{resolve:ssm-secure:/abc/def}";
 
 
     @Test
@@ -42,6 +42,9 @@ public class StringResolverTest {
 
         type = resolver.getTemplateType(secureSSMWithOutVersion);
         assert(resolver.TYPE_SSM_SECURE_STRING.equals(type));
+
+        type = resolver.getTemplateType("{resolve:ssm-secure:/service/datafeed/ent-vpc-2/prod/augeo/credentials/secret}");
+        assert(type.equals(resolver.TYPE_SSM_SECURE_STRING));
     }
 
 }
