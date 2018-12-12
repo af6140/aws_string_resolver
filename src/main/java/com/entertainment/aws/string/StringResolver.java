@@ -27,13 +27,8 @@ package com.entertainment.aws.string;
 
 //{{resolve:secretsmanager:secret-id:secret-string:json-key:version-stage:version-id}}
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProviderChain;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement;
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder;
-import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClient;
 import com.amazonaws.services.simplesystemsmanagement.model.*;
 
 import java.util.regex.Matcher;
@@ -50,72 +45,32 @@ public class StringResolver {
     public static String SSM_SECURE_STRING_PATTERN="\\{resolve:ssm-secure:[a-zA-Z0-9_.\\-/]+(:[a-zA-Z0-9_.\\-]+)?\\}";
     public static String SECRET_MANAGER_STRING_PATTERN="\\{resolve:secretmanager:[a-zA-Z0-9_.\\-/]+:[a-zA-Z0-9_.\\-/]+:[a-zA-Z0-9_.\\-/]+:[a-zA-Z0-9_.\\-/]+:\\d+\\}";
 
-    private AWSSimpleSystemsManagementClientBuilder  clientBuilder =null;
+    private AWSSimpleSystemsManagement  ssm =null;
 
     private Pattern SSM_STRING_REGEX;
     private Pattern SSM_SECURE_STRING_REGEX;
     private Pattern SECRET_MANAGER_STRING_REGEX;
 
-    private AWSCredentials credentials;
-    private AWSCredentialsProviderChain credentialsProviderChain;
-    private String region;
 
-    public StringResolver(String region ){
-        this.clientBuilder=AWSSimpleSystemsManagementClientBuilder.standard();
+    public StringResolver(){
+
         this.SSM_STRING_REGEX = Pattern.compile(SSM_STRING_PATTERN);
         this.SSM_SECURE_STRING_REGEX = Pattern.compile(SSM_SECURE_STRING_PATTERN);
         this.SECRET_MANAGER_STRING_REGEX = Pattern.compile(SECRET_MANAGER_STRING_PATTERN);
-        // use the default credentials provider chain
-        if(region!=null) {
-            this.clientBuilder.setRegion(region);
+    }
+
+    public StringResolver build() {
+        if(ssm==null) {
+            ssm = AWSSimpleSystemsManagementClientBuilder.standard().withRegion(System.getenv("AWS_REGION")).build();
         }
-
+        return this;
     }
 
-    public void initCredentailsProvicer(){
-        this.credentialsProviderChain = new DefaultAWSCredentialsProviderChain();
-        this.clientBuilder.setCredentials(this.credentialsProviderChain);
+    public StringResolver withAWSSimpleSystemsManagement(AWSSimpleSystemsManagement ssm){
+        this.ssm=ssm;
+        return this;
     }
 
-    public StringResolver() {
-        this(null);
-    }
-
-    public AWSCredentials getCredentials() {
-        if(this.credentials !=null ) {
-            return this.credentials;
-        }
-        if(this.credentialsProviderChain!=null) {
-            return this.credentialsProviderChain.getCredentials();
-        }
-        return credentials;
-    }
-
-    /*
-        When credentials set, use the credentials for credential
-     */
-    public void setCredentials(AWSCredentials credentials) {
-        this.credentials = credentials;
-        AWSStaticCredentialsProvider staticCredentialsProvider = new AWSStaticCredentialsProvider(credentials);
-        this.clientBuilder.setCredentials(staticCredentialsProvider);
-    }
-
-    public AWSSimpleSystemsManagementClientBuilder getClientBuilder() {
-        return clientBuilder;
-    }
-
-    public void setClientBuilder(AWSSimpleSystemsManagementClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.clientBuilder.setRegion(region);
-        this.region = region;
-    }
 
     public String getTemplateType(String s) {
         if (s != null) {
@@ -130,10 +85,6 @@ public class StringResolver {
             }
         }
         return null;
-    }
-
-    private AWSSimpleSystemsManagement getSSMManagement() {
-        return this.clientBuilder.build();
     }
 
     private String extractTemplate(String input) {
@@ -191,7 +142,7 @@ public class StringResolver {
         req.setName(path);
         GetParameterResult result = null;
         try {
-            result = this.getSSMManagement().getParameter(req);
+            result = this.ssm.getParameter(req);
         } catch (ParameterNotFoundException e) {
             throw new ResolveException("Cannot find parameter :"+path);
         }
@@ -216,7 +167,7 @@ public class StringResolver {
         GetParameterRequest req= new GetParameterRequest();
         req.setName(path);
         req.setWithDecryption(true);
-        GetParameterResult result = this.getSSMManagement().getParameter(req);
+        GetParameterResult result = this.ssm.getParameter(req);
         Parameter p = result.getParameter();
         p.setSelector(selector);
         p.setType(ParameterType.SecureString);
