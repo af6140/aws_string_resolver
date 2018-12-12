@@ -12,7 +12,7 @@ public class StringResolverTest {
     String SSMWithOutVersion = "abc{ {resolve:ssm:/abc/abc}tbb";
     String templateSSMWithOutVersion = "{resolve:ssm:/abc/abc}";
 
-    String secureSSMWithOutVersion = "abc{ {resolve:ssm-secure:/abc/abc}tbb";
+    String secureSSMWithOutVersion = "abc{ {resolve:ssm-secure:/abc/def}tbb";
     String templateSecureSSMWithOutVersion = "{resolve:ssm-secure:/abc/def}";
 
 
