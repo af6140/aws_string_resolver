@@ -65,14 +65,16 @@ public class StringResolver {
         this.SSM_STRING_REGEX = Pattern.compile(SSM_STRING_PATTERN);
         this.SSM_SECURE_STRING_REGEX = Pattern.compile(SSM_SECURE_STRING_PATTERN);
         this.SECRET_MANAGER_STRING_REGEX = Pattern.compile(SECRET_MANAGER_STRING_PATTERN);
-
         // use the default credentials provider chain
-        this.credentialsProviderChain = new DefaultAWSCredentialsProviderChain();
-        this.clientBuilder.setCredentials(this.credentialsProviderChain);
         if(region!=null) {
             this.clientBuilder.setRegion(region);
         }
 
+    }
+
+    public void initCredentailsProvicer(){
+        this.credentialsProviderChain = new DefaultAWSCredentialsProviderChain();
+        this.clientBuilder.setCredentials(this.credentialsProviderChain);
     }
 
     public StringResolver() {
