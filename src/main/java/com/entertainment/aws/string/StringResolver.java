@@ -157,7 +157,7 @@ public class StringResolver {
     }
 
     public String resolveSsmSecureString(String input) {
-        String template = this.extractTemplate(input, TYPE_SSM_SECURE_STRING);
+        String template = this.extractTemplate(input, TYPE_SSM_SECURE_STRING).replaceAll("\\{|\\}", "");
         String[] specs = template.split(":");
         String path = specs[2];
         String selector = null;
