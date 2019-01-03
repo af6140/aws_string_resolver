@@ -1,4 +1,6 @@
 package com.entertainment.aws.string;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -88,6 +90,26 @@ public class StringResolverSSMTest {
 
     }
 
+    
+    public void testResolveSecureSSMString() {
+        String region = System.getenv("AWS_DEFAULT_REGION");
+        if(region==null) {
+            region = System.getenv("AWS_REGION");
+        }
+        StringResolver resolver =new StringResolver();
+        AWSSimpleSystemsManagement ssm = AWSSimpleSystemsManagementClientBuilder.standard().withRegion(region).withCredentials(DefaultAWSCredentialsProviderChain.getInstance()).build();
+
+        try {
+            String resolved = resolver.withAWSSimpleSystemsManagement(ssm).resolveSsmSecureString("Say {resolve:ssm-secure:/service/datafeed/ent-vpc-2/prod/augeo/credentials/secret:test}");
+            //assert("Say congratulation".equals(resolved));
+            System.out.println(resolved);
+        }catch (ResolveException e) {
+            System.out.println(e.getMessage());
+            assert(false);
+        }
+
+
+    }
 
     @Test
     public void testResolveSSMString() {

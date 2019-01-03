@@ -134,10 +134,6 @@ public class StringResolver {
         }
         String[] specs = template.split(":", 3);
         String path = specs[2];
-        String selector = null;
-        if (specs.length>=4) {
-            selector = specs[3];
-        }
         GetParameterRequest req= new GetParameterRequest();
         req.setName(path);
         GetParameterResult result = null;
@@ -147,7 +143,6 @@ public class StringResolver {
             throw new ResolveException("Cannot find parameter :"+path);
         }
         Parameter p = result.getParameter();
-        p.setSelector(selector);
         p.setType(ParameterType.String);
 
 
@@ -156,20 +151,20 @@ public class StringResolver {
 
     }
 
-    public String resolveSsmSecureString(String input) {
+    public String resolveSsmSecureString(String input) throws ResolveException{
         String template = this.extractTemplate(input, TYPE_SSM_SECURE_STRING).replaceAll("\\{|\\}", "");
-        String[] specs = template.split(":");
+        String[] specs = template.split(":", 3);
         String path = specs[2];
-        String selector = null;
-        if (specs.length>=4) {
-            selector = specs[3];
-        }
         GetParameterRequest req= new GetParameterRequest();
         req.setName(path);
         req.setWithDecryption(true);
-        GetParameterResult result = this.ssm.getParameter(req);
+        GetParameterResult result =null;
+        try {
+            result = this.ssm.getParameter(req);
+        } catch (ParameterNotFoundException e) {
+            throw new ResolveException("Cannot find parameter :"+path);
+        }
         Parameter p = result.getParameter();
-        p.setSelector(selector);
         p.setType(ParameterType.SecureString);
 
         String s_value =  p.getValue();
