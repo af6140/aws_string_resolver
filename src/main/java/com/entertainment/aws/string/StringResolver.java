@@ -132,7 +132,7 @@ public class StringResolver {
         if(template==null) {
             throw new ResolveException("Cannot extract template from :"+ input);
         }
-        String[] specs = template.split(":");
+        String[] specs = template.split(":", 3);
         String path = specs[2];
         String selector = null;
         if (specs.length>=4) {
