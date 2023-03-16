@@ -30,6 +30,6 @@ jobs:
       goals: 'package'
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Pipeline.Workspace)/target/*.jar'
+      targetPath: '$(Pipeline.Workspace)/s/target/*.jar'
       artifact: 'stringresolver'
       publishLocation: 'pipeline'
